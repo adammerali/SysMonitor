@@ -7,7 +7,8 @@
 namespace gm {
 
 struct CpuSnapshot {
-    float totalUsagePercent = 0.f;  // 0–100, system-wide
+    float totalUsagePercent  = 0.f;  // 0–100, system-wide
+    float interruptsPerSec   = 0.f;  // hardware interrupts/sec
 };
 
 struct RamSnapshot {
@@ -46,7 +47,9 @@ struct MetricsStore {
     RingBuffer<> gpuPower;
     RingBuffer<> gpuCoreClock;
     RingBuffer<> gpuMemClock;
+    RingBuffer<> gpuBusy;
     RingBuffer<> cpuUtil;
+    RingBuffer<> cpuInterrupts;
     RingBuffer<> ramUsed;
 
     // Called by the poller thread only.

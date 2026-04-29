@@ -1,6 +1,7 @@
 #pragma once
 #include "gui/GpuPanel.h"
 #include "gui/CpuPanel.h"
+#include "app/CsvLogger.h"
 #include "metrics/MetricsStore.h"
 #include <string_view>
 #include <atomic>
@@ -13,7 +14,8 @@ public:
     void render(const MetricsStore::Frame& frame,
                 const MetricsStore& store,
                 std::string_view gpuBackendName,
-                std::atomic<int>& updateIntervalMs);
+                std::atomic<int>& updateIntervalMs,
+                CsvLogger& csvLogger);
 
 private:
     GpuPanel m_gpuPanel;

@@ -39,6 +39,22 @@ void CpuPanel::render(const CpuSnapshot& cpu,
     ImGui::SameLine();
     ImGui::Text("%.1f %%", cpu.totalUsagePercent);
 
+    // CPU Interrupts/sec
+    ImGui::Text("Interrupts/sec");
+    if (ImPlot::BeginPlot("Interrupts##plot", ImVec2(-1, 100), ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText)) {
+        ImPlot::SetupAxes(nullptr, nullptr,
+                          ImPlotAxisFlags_NoDecorations,
+                          ImPlotAxisFlags_NoDecorations);
+        ImPlot::SetupAxisLimits(ImAxis_Y1, 0.0, 100000.0, ImPlotCond_Always);
+        ImPlot::SetupAxisLimits(ImAxis_X1, 0,
+            static_cast<double>(store.cpuInterrupts.data.size()), ImPlotCond_Always);
+        ImPlot::PlotLineG("Interrupts", RingBufferGetter,
+            const_cast<RingBuffer<>*>(&store.cpuInterrupts), store.cpuInterrupts.count);
+        ImPlot::EndPlot();
+    }
+    ImGui::SameLine();
+    ImGui::Text("%.0f /s", cpu.interruptsPerSec);
+
     ImGui::Spacing();
 
     // RAM progress bar

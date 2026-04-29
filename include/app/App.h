@@ -1,5 +1,6 @@
 #pragma once
 #include "app/Config.h"
+#include "app/CsvLogger.h"
 #include "backend/GPUBackend.h"
 #include "metrics/MetricsStore.h"
 #include "metrics/SystemMetrics.h"
@@ -47,6 +48,7 @@ private:
     std::unique_ptr<IGPUBackend> m_gpuBackend;
     SystemMetrics                m_sysMetrics;
     MetricsStore                 m_store;
+    CsvLogger                    m_csvLogger;
     Config                       m_config;
 
     // Polling thread

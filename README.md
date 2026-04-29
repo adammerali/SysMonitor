@@ -6,6 +6,8 @@ Shows real-time graphs for GPU utilization, VRAM, temperature, power, clocks, CP
 
 Works with Nvidia/AMD GPU's and with any iGPU's. (tested on igpu and nvidia gpu)
 
+Exposes extra statistics like CPU interrupts and GPU busy not typically available in MSI Afterburner or Steam overlay. Brings all system and frame metrics into one tool with real-time graphs and CSV logging.
+
 ## Build
 
 Requires Visual Studio 2022, CMake 3.20+, Git.

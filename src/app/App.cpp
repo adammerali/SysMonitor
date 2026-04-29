@@ -153,13 +153,19 @@ void App::pollerThreadFunc(std::stop_token st)
                   + std::chrono::milliseconds(m_updateIntervalMs.load(std::memory_order_relaxed));
 
         GpuSnapshot gpu = m_gpuBackend->poll();
-        m_store.pushGpu(gpu);
+        float gpuBusy = 0.f;
 
         CpuSnapshot cpu{};
         RamSnapshot ram{};
-        m_sysMetrics.poll(cpu, ram);
+        m_sysMetrics.poll(cpu, ram, gpuBusy);
+
+        gpu.gpuBusyPercent = gpuBusy;
+        m_store.pushGpu(gpu);
         m_store.pushCpu(cpu);
         m_store.pushRam(ram);
+
+        if (m_csvLogger.isLogging())
+            m_csvLogger.log(gpu, cpu, ram);
 
         std::this_thread::sleep_until(next);
     }
@@ -186,7 +192,8 @@ int App::run()
 
         mainWindow.render(frame, m_store,
                           m_gpuBackend->backendName(),
-                          m_updateIntervalMs);
+                          m_updateIntervalMs,
+                          m_csvLogger);
 
         ImGui::Render();
 

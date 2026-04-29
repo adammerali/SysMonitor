@@ -6,7 +6,8 @@ namespace gm {
 void MainWindow::render(const MetricsStore::Frame& frame,
                          const MetricsStore& store,
                          std::string_view gpuBackendName,
-                         std::atomic<int>& updateIntervalMs)
+                         std::atomic<int>& updateIntervalMs,
+                         CsvLogger& csvLogger)
 {
     // Full-screen dockspace window
     const ImGuiViewport* vp = ImGui::GetMainViewport();
@@ -45,11 +46,23 @@ void MainWindow::render(const MetricsStore::Frame& frame,
 
     // Settings popup
     if (m_showSettings) {
-        ImGui::SetNextWindowSize(ImVec2(300, 100), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(320, 130), ImGuiCond_Always);
         if (ImGui::Begin("Settings", &m_showSettings)) {
             int interval = updateIntervalMs.load(std::memory_order_relaxed);
             if (ImGui::SliderInt("Update interval (ms)", &interval, 100, 5000))
                 updateIntervalMs.store(interval, std::memory_order_relaxed);
+
+            ImGui::Spacing();
+
+            if (csvLogger.isLogging()) {
+                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.7f, 0.1f, 0.1f, 1.f));
+                if (ImGui::Button("Stop Logging")) csvLogger.stop();
+                ImGui::PopStyleColor();
+                ImGui::SameLine();
+                ImGui::TextDisabled("Logging to CSV...");
+            } else {
+                if (ImGui::Button("Start Logging")) csvLogger.start();
+            }
         }
         ImGui::End();
     }

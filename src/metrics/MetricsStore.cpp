@@ -8,6 +8,7 @@ void MetricsStore::pushGpu(const GpuSnapshot& s)
     latestGpu = s;
     if (s.valid) {
         gpuUtil.push(s.utilizationPercent);
+        gpuBusy.push(s.gpuBusyPercent);
         gpuVramUsed.push(s.vramUsedMB);
         gpuTemp.push(s.temperatureCelsius);
         gpuPower.push(s.powerDrawWatts);
@@ -21,6 +22,7 @@ void MetricsStore::pushCpu(const CpuSnapshot& s)
     std::lock_guard lock(mtx);
     latestCpu = s;
     cpuUtil.push(s.totalUsagePercent);
+    cpuInterrupts.push(s.interruptsPerSec);
 }
 
 void MetricsStore::pushRam(const RamSnapshot& s)

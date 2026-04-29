@@ -60,6 +60,10 @@ void GpuPanel::render(const GpuSnapshot& latest,
     ImGui::Text("Utilization");
     renderGraph("Util##gpu", store.gpuUtil, 0.f, 100.f, "%%", latest.utilizationPercent);
 
+    // GPU Busy (PDH cross-vendor)
+    ImGui::Text("GPU Busy");
+    renderGraph("Busy##gpu", store.gpuBusy, 0.f, 100.f, "%%", latest.gpuBusyPercent);
+
     // VRAM
     float vramMax = latest.vramTotalMB > 0.f ? latest.vramTotalMB : 8192.f;
     ImGui::Text("VRAM  (%.0f MB total)", latest.vramTotalMB);

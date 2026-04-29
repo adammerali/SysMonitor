@@ -6,7 +6,8 @@
 namespace gm {
 
 struct GpuSnapshot {
-    float utilizationPercent = 0.f;   // 0–100
+    float utilizationPercent = 0.f;   // 0–100 (vendor SDK)
+    float gpuBusyPercent     = 0.f;   // 0–100 (PDH GPU Engine, cross-vendor)
     float vramUsedMB         = 0.f;
     float vramTotalMB        = 0.f;
     float temperatureCelsius = 0.f;
